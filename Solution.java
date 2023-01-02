@@ -1,6 +1,7 @@
 package PbSolving;
 
 //class PbSolving.Solution {
+//976. Largest Perimeter Triangle
 //    public int largestPerimeter(int[] nums) {
 //        Arrays.sort(nums);
 //
@@ -908,51 +909,1169 @@ package PbSolving;
 //        }
 //    }
 //1886: Determine whether matrix can be obtained by rotation:SOLVED
+//class Solution {
+//    public static void main(String[] args) {
+//        int[][] mat = {{0, 0, 0}, {0, 1, 0}, {1, 1, 1}};
+//        int[][] target = {{1, 1, 1}, {0, 1, 0}, {0, 0, 0}};
+//        findRotation(mat, target);
+//    }
+//
+//    public static void rotate(int[][] mat) {
+//        for (int i = 0; i < mat.length; i++) {
+//            for (int j = i+1; j < mat[i].length; j++) {
+//                int temp = mat[j][i];
+//                mat[j][i] = mat[i][j];
+//                mat[i][j] = temp;
+//            }
+//        }
+//        for (int i = 0; i < mat.length; i++) {
+//            int l = 0;
+//            int r = mat.length - 1;
+//            while (l < r) {
+//                int temp = mat[i][l];
+//                mat[i][l] = mat[i][r];
+//                mat[i][r] = temp;
+//                l++;
+//                r--;
+//            }
+//        }
+//    }
+//
+//    public static boolean findRotation(int[][] mat, int[][] target) {
+//        int count = 0;
+//        do {
+//            boolean valid = true;
+//            for (int i = 0; i < mat.length; i++) {
+//                for (int j = 0; j < mat[i].length; j++) {
+//                    if (mat[i][j] != target[i][j]) {
+//                        valid = false;
+//                    }
+//                }
+//            }
+//            if (valid == true) {
+//                return true;
+//            }
+//            rotate(mat);
+//            count++;
+//        } while (count <= 3);
+//        return false;
+//    }
+//}
+//438. Find All Anagrams in a String
+// class Solution {
+//    public List<Integer> findAnagrams(String s, String p) {
+//        if (s.length()<p.length()){
+//            return new ArrayList<Integer>();
+//        }
+//        ArrayList<Integer> answer = new ArrayList<Integer>();
+//        int[] freq1 = new int[26];
+//        int[] freq2 = new int[26];
+//
+//        for (int i = 0; i < p.length(); i++) {
+//            freq1[p.charAt(i) - 'a']++;
+//        }
+//        for (int i = 0; i < p.length(); i++) {
+//            freq2[s.charAt(i) - 'a']++;
+//        }
+//        for (int i = 0; i + p.length() - 1 < s.length(); i++) {
+//            Boolean identical = true;
+//            for (int j = 0; j < 26; j++) {
+//                if (freq1[j] != freq2[j]) {
+//                    identical = false;
+//                }
+//            }
+//            if (identical) {
+//                answer.add(i);
+//            }
+//            freq2[s.charAt(i) - 'a']--;
+//            if (i + p.length() < s.length()) {
+//                freq2[s.charAt(i + p.length()) - 'a']++;
+//            }
+//        }
+//        return answer;
+//    }
+//}
+//713. Subarray products less than K
+//class Solution {
+//    public int numSubarrayProductLessThanK(int[] nums, int k) {
+//        if (k == 0) {
+//            return 0;
+//        }
+//        int answer = 0;
+//        int ans = 1;
+//        int count = 0;
+//        for (int i = 0; i < nums.length; i++) {
+//            while (count < nums.length && ans * nums[count] < k) {
+//                ans *= nums[count];
+//                count++;
+//            }
+//            answer += count - i;
+//            if (count != i) {
+//                ans /= nums[i];
+//
+//            }else {
+//                count++;
+//            }
+//        }
+//
+//        return answer;
+//    }
+//}
+//910. smallest range
+//class Solution {
+//    public int smallestRangeII(int[] nums, int k) {
+//        Arrays.sort(nums);
+//        int best = nums[nums.length-1] - nums[0];
+//
+//        for (int i=0;i<nums.length-1;i++){
+//            int max = Math.max(nums [i] +k, nums[nums.length-1]-k);
+//            int min= Math.min(nums[0]+k,nums[i+1]-k);
+//            best = Math.min(best, max-min);
+//        }
+//        return best;
+//    }
+//}
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Stack;
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ * int val;
+ * ListNode next;
+ * ListNode() {}
+ * ListNode(int val) { this.val = val; }
+ * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+//2. Add two numbers
+//class Solution {
+//    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+//        int carry = 0;
+//        ListNode result = null;
+//        ListNode r = null;
+//
+//        while (l1 != null && l2 != null) {
+//            int current = l1.val + l2.val + carry;
+//
+//            if (result != null) {
+//                result.next = new ListNode(current % 10);
+//                result = result.next;
+//            } else {
+//                result = new ListNode(current % 10);
+//                r=result;
+//            }
+//            carry = current / 10;
+//            l1=l1.next;
+//            l2=l2.next;
+//        }
+//        while (l1 != null) {
+//            int current = l1.val + carry;
+//            result.next = new ListNode(current % 10);
+//            result = result.next;
+//            carry = current / 10;
+//            l1= l1.next;
+//        }
+//        while (l2 != null) {
+//            int current = l2.val + carry;
+//            result.next = new ListNode(current % 10);
+//            result = result.next;
+//            carry = current / 10;
+//            l2= l2.next;
+//        }
+//        if (carry != 0){
+//            result.next = new ListNode(carry);
+//            result =result.next;
+//        }
+//        return r;
+//    }
+//}
+////973. K closest points to origin
+//class Solution {
+//    public int[][] kClosest(int[][] points, int k) {
+//        Arrays.sort(points, new Comparator<int[]>() {
+//            @Override
+//            public int compare(int[] o1, int[] o2) {
+//                double dist1 = Math.sqrt(Math.pow(o1[0], 2) + Math.pow(o1[1], 2));
+//                double dist2 = Math.sqrt(Math.pow(o2[0], 2) + Math.pow(o2[1], 2));
+//                if (dist1 < dist2) {
+//                    return -1;
+//                } else if (dist2 < dist1) {
+//                    return 1;
+//                }
+//                return 0;
+//            }
+//        });
+//        int[][] ans = new int[k][2];
+//
+//        for (int i = 0; i < k; i++) {
+//            ans[i]= points[i].clone();
+//        }
+//        return ans;
+//    }
+//}
+//1630. Arthimetic arrays
+//class Solution {
+//    public List<Boolean> checkArithmeticSubarrays(int[] nums, int[] l, int[] r) {
+//        List<Boolean> ans = new ArrayList<>(l.length);
+//
+//        for (int t = 0; t < l.length; t++) {
+//            int begin = l[t];
+//            int end = r[t];
+//
+//            int range = end - begin + 1;
+//            int[] x = new int[range];
+//            int k = 0;
+//
+//            for (int i = begin; i <= end; i++) {
+//                x[k] = nums[i];
+//                k++;
+//            }
+//
+//            Arrays.sort(x);
+//            int d = x[1] - x[0];
+//            Boolean y = true;
+//            for (int i = 0; i < x.length - 1; i++) {
+//                if (x[i + 1] - x[i] != d) {
+//                    y = false;
+//                }
+//            }
+//            ans.add(y);
+//        }
+//        return ans;
+//    }
+//}
+//503. Next Greater Element II
+//class Solution {
+//    public int[] nextGreaterElements(int[] nums) {
+//        int[] x = new int[nums.length * 2];
+//        int[] ans = new int[nums.length];
+//        for (int i = 0; i < nums.length; i++) {
+//            x[i] = nums[i];
+//            x[i + nums.length] = nums[i];
+//        }
+//        for (int i = 0; i < nums.length; i++) {
+//            ans[i]=-1;
+//            for (int j = i + 1; j < x.length; j++) {
+//                if (x[j] > nums[i]) {
+//                    ans[i] = x[j];
+//                    break;
+//                }
+//            }
+//        }
+//        return ans;
+//    }
+//}
+////49. Group Anagrams
+//class Solution {
+//    public List<List<String>> groupAnagrams(String[] strs) {
+//        HashMap<String, List<String>> groups = new HashMap<String, List<String>>();
+//
+//        for (int i = 0; i < strs.length; i++) {
+//
+//            String temp = strs[i];
+//            char[] x = temp.toCharArray();
+//            Arrays.sort(x);
+//            temp = new String (x);
+//
+//            if (!groups.containsKey(temp)){
+//                groups.put(temp, new ArrayList<String>());
+//            }
+//            groups.get(temp).add(strs[i]);
+//
+//        }
+//        // List<List<String>> answer = new ArrayList<List<String>>();
+//        // for (List<String>i : groups.values()){
+//        //     answer.add(i);
+//        // }
+//        return new ArrayList<>(groups.values());
+//    }
+//}
+// 896. Monotonic Array
+//class Solution {
+//    public boolean isMonotonic(int[] nums) {
+//        boolean inc =true, dec=true;
+//
+//        for (int i=0;i<nums.length-1;i++){
+//            inc = inc && (nums[i]<=nums[i+1]);
+//            dec= dec && (nums[i]>=nums[i+1]);
+//        }
+//        return (inc || dec);
+//    }
+
+//191. Number of 1 bits
+//public class Solution {
+//    // you need to treat n as an unsigned value
+//    public int hammingWeight(int n) {
+//
+//
+//    }
+//}
+//1281. Subtract the Product and Sum of Digits of an Integer
+//class Solution {
+//    public int subtractProductAndSum(int n) {
+//        int sum=0;
+//        int product= 1;
+//        while (n!=0){
+//            int x = n%10;
+//            sum= sum+x;
+//            product = product*x;
+//
+//            n=n/10;
+//        }
+//        return (product-sum);
+//    }
+//}
+////155. Min Stack
+//class MinStack {
+//
+//    Stack<Integer> s1, s2;
+//
+//    public MinStack() {
+//        s1 = new Stack<Integer>();
+//        s2 = new Stack<Integer>();
+//
+//    }
+//
+//    public void push(int val) {
+//        s1.push(val);
+//        if (s2.empty()) {
+//            s2.push(val);
+//        } else {
+//            s2.push(Math.min(val, s2.peek()));
+//        }
+//    }
+//
+//    public void pop() {
+//        s1.pop();
+//        s2.pop();
+//    }
+//
+//    public int top() {
+//        return (s1.peek());
+//    }
+//
+//    public int getMin() {
+//        return (s2.peek());
+//    }
+//}
+//
+///**
+// * Your MinStack object will be instantiated and called as such:
+// * MinStack obj = new MinStack();
+// * obj.push(val);
+// * obj.pop();
+// * int param_3 = obj.top();
+// * int param_4 = obj.getMin();
+// */
+//class Solution {
+//    public boolean lemonadeChange(int[] bills) {
+//
+//        int count5 = 0;
+//        int count10 = 0;
+//
+//        for (int i = 0; i < bills.length; i++) {
+//
+//            if (bills[i] == 5) {
+//                count5++;
+//            } else if (bills[i] == 10) {
+//                count10++;
+//                if (count5 != 0) {
+//                    count5--;
+//                } else {
+//                    return false;
+//                }
+//            } else {
+//                if (count10 != 0 && count5 != 0) {
+//                    count10--;
+//                    count5--;
+//                } else if (count5 > 2) {
+//                    count5 = count5 - 3;
+//                } else {
+//                    return false;
+//                }
+//            }
+//
+//        }
+//        return true;
+//    }
+//}
+//
+////1845. Seat Reservation Manager
+//class SeatManager {
+//    PriorityQueue<Integer> x;
+//
+//    public SeatManager(int n) {
+//        x = new PriorityQueue<Integer>();
+//        for (int i = 1; i <= n; i++) {
+//            x.add(i);
+//        }
+//    }
+//
+//    public int reserve() {
+//        return (x.poll());
+//    }
+//
+//    public void unreserve(int seatNumber) {
+//        x.add(seatNumber);
+//    }
+//}
+////622. Design Circular Queue
+//
+///**
+// * Your SeatManager object will be instantiated and called as such:
+// * SeatManager obj = new SeatManager(n);
+// * int param_1 = obj.reserve();
+// * obj.unreserve(seatNumber);
+// */
+//class MyCircularQueue {
+//    int[] q;
+//    int front;
+//    int rear;
+//    int size;
+//
+//    public MyCircularQueue(int k) {
+//        q = new int[k];
+//        front = 0;
+//        rear = 0;
+//        size = 0;
+//    }
+//
+//    public boolean enQueue(int value) {
+//        if (size < q.length) {
+//            q[rear++] = value; //value is put at rear, and then rear is incremented
+//            rear %= q.length;
+//            size++;
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    public boolean deQueue() {
+//        if (size > 0) {
+//            front++;
+//            front %= q.length;
+//            size--;
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    public int Front() {
+//        if (size == 0) {
+//            return -1;
+//        }
+//        return q[front];
+//    }
+//
+//    public int Rear() {
+//        if (size == 0) {
+//            return -1;
+//        }
+//        return q[(rear - 1 + q.length) % q.length];
+//    }
+//
+//    public boolean isEmpty() {
+//        return (size == 0);
+//    }
+//
+//    public boolean isFull() {
+//        return (size == q.length);
+//    }
+//}
+//
+//// 729. My Calendar I
+//class MyCalendar {
+//    TreeMap<Integer, Integer> x;
+//
+//    public MyCalendar() {
+//        x = new TreeMap<Integer, Integer>();
+//    }
+//
+//    public boolean book(int start, int end) {
+//        if (x.isEmpty()) {
+//            x.put(start, end);
+//            return true;
+//        }
+//        Map.Entry<Integer, Integer> entry1 = x.firstEntry();
+//        Map.Entry<Integer, Integer> entry2 = x.lastEntry();
+//        if (end <= entry1.getKey()) {
+//            x.put(start, end);
+//            return true;
+//        }
+//        if (start >= entry2.getValue()) {
+//            x.put(start, end);
+//            return true;
+//        }
+//        if (x.floorKey(start) != null && x.ceilingKey(start) != null) {
+//            int before = x.floorKey(start);
+//            int after = x.ceilingKey(start);
+//
+//            if (x.get(before) <= start && after >= end) {
+//                x.put(start, end);
+//                return true;
+//            }
+//        }
+//
+//
+//        return false;
+//    }
+//}
+//// 1797. Design Authentication Manager
+//
+//class AuthenticationManager {
+//    int timeTolive;
+//    TreeMap<String, Integer> map;
+//    TreeMap<Integer, String> mapreverse;
+//
+//    public AuthenticationManager(int timeToLive) {
+//        timeToLive = timeTolive;
+//        map = new TreeMap<String, Integer>();
+//        mapreverse = new TreeMap<Integer, String>();
+//    }
+//
+//    public void generate(String tokenId, int currentTime) {
+//        map.put(tokenId, currentTime + timeTolive);
+//        mapreverse.put(currentTime + timeTolive, tokenId);
+//    }
+//
+//    public void renew(String tokenId, int currentTime) {
+//        if (map.containsKey(tokenId) && currentTime < map.get(tokenId)) {
+//
+//            mapreverse.remove(map.get(tokenId));
+//            map.put(tokenId, currentTime + timeTolive);
+//            mapreverse.put(currentTime + timeTolive, tokenId);
+//        }
+//
+//    }
+//
+//    public int countUnexpiredTokens(int currentTime) {
+//        // mapreverse.tailMap(currentTime); //will return a map with all keys bigger than current time
+//        return mapreverse.tailMap(currentTime).size();
+//    }
+//}
+//
+////53. max subarray
+//class Solution {
+//    public int maxSubArray(int[] nums) {
+//        int max = -10000;
+//        for (int i = 0; i < nums.length; i++) {
+//            int currentmax = 0;
+//            for (int j = i; j < nums.length; j++) {
+//                currentmax += nums[j];
+//                if (currentmax > max) {
+//                    max = currentmax;
+//                }
+//            }
+//        }
+//        return max;
+//    }
+//}
+//
+////53.
+//
+//class Solution {
+//    public int maxSubArray(int[] nums) {
+//        int previous = 0, best = -10000;
+//        for (int i = 0; i < nums.length; i++) {
+//            best = Math.max(best, nums[i] + previous);
+//            previous = Math.max(0, nums[i] + previous);
+//        }
+//        return best;
+//    }
+//}
+//
+////1. Two Sum
+//class Solution {
+//    public int[] twoSum(int[] nums, int target) {
+//        boolean y = false;
+//        for (int i = 0; i < nums.length; i++) {
+//            int x = target - nums[i];
+//            for (int j = i + 1; j < nums.length; j++) {
+//                if (nums[j] == x) {
+//                    return (new int[]{i, j});
+//                }
+//            }
+//        }
+//        return new int[]{1, 1};
+//    }
+//}
+//
+////1. Two Sum
+//class Solution {
+//    public int[] twoSum(int[] nums, int target) {
+//        TreeMap<Integer, Integer> ans = new TreeMap<Integer, Integer>();
+//        for (int i = 0; i < nums.length; i++) {
+//            ans.put(nums[i], i);
+//        }
+//        for (int i = 0; i < nums.length; i++) {
+//            if (ans.containsKey(target - nums[i]) && i != ans.get(target - nums[i])) {
+//                return new int[]{i, ans.get(target - nums[i])};
+//            }
+//        }
+//
+//        return new int[]{};
+//    }
+//}
+//
+//
+//// 88. Merge Sorted Array
+//
+//class Solution {
+//    public void merge(int[] nums1, int m, int[] nums2, int n) {
+//
+//
+//        int j = 0;
+//        for (int i = nums1.length - nums2.length; i < nums1.length; i++) {
+//            nums1[i] = nums2[j];
+//            j++;
+//        }
+//        Arrays.sort(nums1);
+//    }
+//}
+//
+////88.
+//class Solution {
+//    public void merge(int[] nums1, int m, int[] nums2, int n) {
+//        int[] ans = new int[nums1.length];
+//        int pointer1 = 0;
+//        int pointer2 = 0;
+//        int pointer3 = 0;
+//        while (pointer1 < nums1.length - nums2.length && pointer2 < nums2.length) {
+//            if (nums1[pointer1] < nums2[pointer2]) {
+//                ans[pointer3] = nums1[pointer1];
+//                pointer1++;
+//            } else {
+//                ans[pointer3] = nums2[pointer2];
+//                pointer2++;
+//            }
+//            pointer3++;
+//        }
+//        while (pointer1 < nums1.length - nums2.length) {
+//            ans[pointer3] = nums1[pointer1];
+//            pointer1++;
+//            pointer3++;
+//        }
+//        while (pointer2 < nums2.length) {
+//            ans[pointer3] = nums2[pointer2];
+//            pointer2++;
+//            pointer3++;
+//        }
+//
+//        for (int i = 0; i < nums1.length; i++) {
+//            nums1[i] = ans[i];
+//        }
+//    }
+//}
+//
+////350. Intersection of Two Arrays II
+//class Solution {
+//    public int[] intersect(int[] nums1, int[] nums2) {
+//
+//        ArrayList<Integer> ans = new ArrayList<Integer>();
+//        boolean[] bool = new boolean[nums2.length];
+//
+//        for (int i = 0; i < nums1.length; i++) {
+//            for (int j = 0; j < nums2.length; j++) {
+//                if (nums1[i] == nums2[j] && bool[j] == false) {
+//                    ans.add(nums1[i]);
+//                    bool[j] = true;
+//                    break;
+//                }
+//            }
+//        }
+//        int[] answer = new int[ans.size()];
+//        for (int i = 0; i < ans.size(); i++) {
+//            answer[i] = ans.get(i);
+//        }
+//        return answer;
+//
+//    }
+//}
+//
+////350.
+//class Solution {
+//    public int[] intersect(int[] nums1, int[] nums2) {
+//
+//        int[] freq1 = new int[1001];
+//        int[] freq2 = new int[1001];
+//        ArrayList<Integer> ans = new ArrayList<Integer>();
+//
+//        for (int i = 0; i < nums1.length; i++) {
+//            freq1[nums1[i]]++;
+//        }
+//        for (int i = 0; i < nums2.length; i++) {
+//            freq2[nums2[i]]++;
+//        }
+//        for (int i = 0; i < freq1.length; i++) {
+//            int x = Math.min(freq1[i], freq2[i]);
+//            for (int j = 0; j < x; j++) {
+//                ans.add(i);
+//            }
+//        }
+//        int[] answer = new int[ans.size()];
+//        for (int i = 0; i < ans.size(); i++) {
+//            answer[i] = ans.get(i);
+//        }
+//        return answer;
+//    }
+//}
+//
+//121. Best Time to Buy and Sell Stock
 class Solution {
-    public static void main(String[] args) {
-        int[][] mat = {{0, 0, 0}, {0, 1, 0}, {1, 1, 1}};
-        int[][] target = {{1, 1, 1}, {0, 1, 0}, {0, 0, 0}};
-        findRotation(mat, target);
-    }
+    public int maxProfit(int[] prices) {
 
-    public static void rotate(int[][] mat) {
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = i+1; j < mat[i].length; j++) {
-                int temp = mat[j][i];
-                mat[j][i] = mat[i][j];
-                mat[i][j] = temp;
+        int[] prefixsum = new int[prices.length];
+        prefixsum[0] = prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            prefixsum[i] = prefixsum[i - 1] + prices[i];
+        }
+
+    }
+}
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        int[] suffixmax = new int[prices.length];
+        suffixmax[prices.length - 1] = prices[prices.length - 1];
+        for (int i = prices.length - 2; i >= 0; i--) {
+            suffixmax[i] = Math.max(suffixmax[i + 1], prices[i]);
+        }
+        int diff = 0;
+        for (int i = 0; i < suffixmax.length - 1; i++) {
+            int currentdiff = suffixmax[i + 1] - prices[i];
+            diff = Math.max(diff, currentdiff);
+        }
+        return diff;
+    }
+}
+
+// 74. Search a 2D Matrix
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int k = -1;
+        for (int i = 0; i < matrix.length; i++) {
+            if (matrix[i][0] > target) {
+                k = i - 1;
+                break;
             }
         }
-        for (int i = 0; i < mat.length; i++) {
-            int l = 0;
-            int r = mat.length - 1;
-            while (l < r) {
-                int temp = mat[i][l];
-                mat[i][l] = mat[i][r];
-                mat[i][r] = temp;
-                l++;
-                r--;
-            }
-        }
-    }
-
-    public static boolean findRotation(int[][] mat, int[][] target) {
-        int count = 0;
-        do {
-            boolean valid = true;
-            for (int i = 0; i < mat.length; i++) {
-                for (int j = 0; j < mat[i].length; j++) {
-                    if (mat[i][j] != target[i][j]) {
-                        valid = false;
-                    }
+        if (k != -1) {
+            for (int j = 0; j < matrix[k].length; j++) {
+                if (matrix[k][j] == target) {
+                    return true;
                 }
             }
-            if (valid == true) {
-                return true;
-            }
-            rotate(mat);
-            count++;
-        } while (count <= 3);
+        }
         return false;
     }
 }
+
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int low = 0;
+        int high = matrix.length * matrix[0].length - 1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            int r, c;
+            c = mid % matrix[0].length;
+            r = mid / matrix[0].length;
+            if (target == matrix[r][c]) {
+                return true;
+            }
+            if (target > matrix[r][c]) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return false;
+    }
+}
+
+118.Pascal's Triangle
+
+class Solution {
+
+
+    public static List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> list = new ArrayList<List<Integer>>();
+        for (int i = 0; i < numRows; i++) {
+            list.add(new ArrayList());
+        }
+        list.get(0).add(1);
+        for (int i = 1; i < numRows; i++) {
+            int c = i + 1;
+            list.get(i).add(1);
+            for (int j = 1; j < c - 1; j++) {
+                list.get(i).add(list.get(i - 1).get(j - 1) + list.get(i - 1).get(j));
+            }
+            list.get(i).add(1);
+        }
+        return list;
+    }
+}
+
+//36. Valid Sudoko
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+
+        for (int i = 0; i < board.length; i += 3) {
+            for (int j = 0; j < board.length; j += 3) {
+                int[] freq = new int[10];
+                for (int i1 = i; i1 < i + 3; i1++) {
+                    for (int j1 = j; j1 < j + 3; j1++) {
+                        char q = board[i1][j1];
+                        if (q >= '0' && q <= '9') {
+                            freq[q - 48]++;
+                            if (freq[q - 48] > 1) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < board.length; i++) {
+            int[] freq = new int[10];
+            for (int j = 0; j < board[0].length; j++) {
+                char q = board[i][j];
+                if (q >= '0' && q <= '9') {
+                    freq[q - 48]++;
+                    if (freq[q - 48] > 1) {
+                        return false;
+                    }
+                }
+            }
+        }
+        for (int j = 0; j < board.length; j++) {
+            int[] freq = new int[10];
+            for (int i = 0; i < board[0].length; i++) {
+                char q = board[i][j];
+                if (q >= '0' && q <= '9') {
+                    freq[q - 48]++;
+                    if (freq[q - 48] > 1) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+
+    }
+}
+
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+
+        for (int i = 0; i < board.length; i += 3) {
+            for (int j = 0; j < board.length; j += 3) {
+                int[] freq = new int[10];
+                for (int i1 = i; i1 < i + 3; i1++) {
+                    for (int j1 = j; j1 < j + 3; j1++) {
+                        char q = board[i1][j1];
+                        if (q >= '0' && q <= '9') {
+                            freq[q - 48]++;
+                            if (freq[q - 48] > 1) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < board.length; i++) {
+            int[] freq1 = new int[10];
+            int[] freq2 = new int[10];
+
+            for (int j = 0; j < board[0].length; j++) {
+                char q1 = board[i][j];
+                char q2 = board[j][i];
+
+                if (q1 >= '0' && q1 <= '9') {
+                    freq1[q1 - 48]++;
+                    if (freq1[q1 - 48] > 1) {
+                        return false;
+                    }
+                }
+                if (q2 >= '0' && q2 <= '9') {
+                    freq2[q2 - 48]++;
+                    if (freq2[q2 - 48] > 1) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+
+    }
+}
+
+//387. First Unique Character in a String
+
+class Solution {
+    public int firstUniqChar(String s) {
+        int[] freq = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            freq[s.charAt(i) - 'a']++;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            int y = s.charAt(i) - 'a';
+            if (freq[y] == 1) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+
+// 383. Ransom Note
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        int[] freq1 = new int[26];
+        int[] freq2 = new int[26];
+
+        for (int i = 0; i < ransomNote.length(); i++) {
+            freq1[ransomNote.charAt(i) - 'a']++;
+        }
+        for (int i = 0; i < magazine.length(); i++) {
+            freq2[magazine.charAt(i) - 'a']++;
+        }
+        boolean can = false;
+        for (int i = 0; i < freq1.length; i++) {
+            if (freq2[i] >= freq1[i]) {
+                can = true;
+            } else {
+                return false;
+            }
+        }
+        return can;
+    }
+}
+
+// 20. Valid Parentheses
+
+class Solution {
+    public boolean isValid(String s) {
+
+        Stack<Character> x = new Stack<Character>();
+        for (int i = 0; i < s.length(); i++) {
+            if ((s.charAt(i) == '(' || s.charAt(i) == '[') || (s.charAt(i) == '{')) {
+                x.push(s.charAt(i));
+            } else {
+                if (x.empty()) {
+                    return false;
+                }
+                if ((x.peek() == '(' && s.charAt(i) == ')') || (x.peek() == '[' && s.charAt(i) == ']') || (x.peek() == '{' && s.charAt(i) == '}')) {
+                    x.pop();
+                } else {
+                    return false;
+                }
+            }
+
+        }
+        return x.empty();
+    }
+}
+
+class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode() {
+    }
+
+    ListNode(int val) {
+        this.val = val;
+    }
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+}
+//141.
+
+//class ListNode {
+//    int val;
+//    ListNode next;
+//
+//    ListNode(int x) {
+//        val = x;
+//        next = null;
+//    }
+//}
+
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        HashMap<ListNode, Boolean> ans = new HashMap<ListNode, Boolean>();
+        while (head != null) {
+            if (ans.containsKey(head)) {
+                return true;
+            }
+            ans.put(head, true);
+            head = head.next;
+        }
+        return false;
+
+    }
+}
+
+//another solution -- turtoise and hare algorithm
+//class ListNode {
+//    int val;
+//    ListNode next;
+//
+//    ListNode(int x) {
+//        val = x;
+//        next = null;
+//    }
+//}
+
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if (head == null || head.next == null) {
+            return false;
+        }
+        ListNode slow = head;
+        ListNode fast = head.next;
+
+        while (slow != fast) {
+            if (slow.next == null || fast.next == null || fast.next.next == null) {
+                return false;
+            }
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return true;
+
+    }
+}
+
+//142. Linked List Cycle II
+
+//class ListNode {
+//    int val;
+//    ListNode next;
+//
+//    ListNode(int x) {
+//        val = x;
+//        next = null;
+//    }
+//}
+
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        if (head == null || head.next == null) {
+            return null;
+        }
+        ListNode slow = head;
+        ListNode fast = head.next;
+
+        int size = 1;
+        while (slow != fast) {
+            if (slow.next == null || fast.next == null || fast.next.next == null) {
+                return null;
+            }
+            slow = slow.next;
+            fast = fast.next.next;
+            size++;
+        }
+        slow = head;
+        fast = head;
+        for (int i = 0; i < size; i++) {
+            fast = fast.next;
+        }
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return slow;
+    }
+}
+//21.
+
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode current = new ListNode();
+        ListNode result = current;
+        while (list1 != null && list2 != null) {
+            if (list1.val < list2.val) {
+                current.next = new ListNode(list1.val);
+                list1 = list1.next;
+            } else {
+                current.next = new ListNode(list2.val);
+                list2 = list2.next;
+
+            }
+            current = current.next;
+        }
+        while (list1 != null) {
+            current.next = new ListNode(list1.val);
+            list1 = list1.next;
+            current = current.next;
+        }
+        while (list2 != null) {
+            current.next = new ListNode(list2.val);
+            list2 = list2.next;
+            current = current.next;
+        }
+        return result.next;
+    }
+}
+
+//203.
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        ListNode x = new ListNode();
+        ListNode ans = x;
+
+        while (head != null) {
+            if (head.val != val) {
+                x.next = new ListNode(head.val);
+                x = x.next;
+            }
+            head = head.next;
+        }
+        return ans.next;
+    }
+}
+
+//203.
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        while (head != null && head.val == val) {
+            head = head.next;
+        }
+        if (head == null) {
+            return null;
+        }
+
+        ListNode previous = head;
+        ListNode answer= head;
+        head = head.next;
+        while (head != null) {
+            if (head.val == val) {
+                previous.next = head.next;
+            } else {
+                previous=head;
+            }
+            head=head.next;
+        }
+        return answer;
+    }
+}
+
+
+
+
+
+
+
+
